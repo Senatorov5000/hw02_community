@@ -1,14 +1,12 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, render
 
-from .models import Group
+from .models import Group, Post
 
-from .models import Post
-
-DATE = ('-pub_date')[:10]
+DATE = int(10)
 
 
 def index(request):
-    posts = Post.objects.order_by(DATE)
+    posts = Post.objects.order_by('-pub_date')[:DATE]
     context = {
         'posts': posts,
     }
@@ -16,9 +14,9 @@ def index(request):
 
 
 def group_posts(request, slug):
-    group = get_object_or_404(Group, slug=slug)
+    group = get_object_or_404(Group, slug=slug),
 
-    posts = Post.objects.filter(group=group).order_by(DATE)
+    posts = Post.objects.filter(group=group).order_by('-pub_date')[:DATE]
     context = {
         'group': group,
         'posts': posts,
